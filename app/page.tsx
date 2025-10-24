@@ -1,3 +1,5 @@
+import { LandingPage } from "@/components/common/landing";
+
 export default function Home() {
-  return <div className="flex min-h-screen">Home Page</div>;
+  return <LandingPage />;
 }
