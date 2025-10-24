@@ -3,6 +3,26 @@
 
 @custom-variant dark (&:is(.dark *));
 
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #4a90e2 transparent;
+}
+
+/* Chrome, Edge, Safari */
+*::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #4a90e2;
+  border-radius: 6px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -123,5 +143,9 @@
 
   body {
     @apply bg-background text-foreground;
+  }
+
+  .app_container {
+    @apply mx-auto w-full max-w-[1440px] px-4 md:px-6;
   }
 }
