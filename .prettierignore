@@ -1,0 +1,10 @@
+node_modules
+.next
+.husky
+build
+pnpm-lock.yaml
+.eslintrc.cjs
+.github
+public
+dist
+package.json
