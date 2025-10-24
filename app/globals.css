@@ -94,7 +94,7 @@
 
   /* Muted */
   --muted: oklch(0.93 0.02 255);
-  --muted-foreground: oklch(0.45 0.03 255);
+  --muted-foreground: oklch(51.543% 0.03536 254.499);
 }
 
 /* Dark Mode */
