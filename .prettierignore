@@ -7,4 +7,3 @@ pnpm-lock.yaml
 .github
 public
 dist
-package.json
