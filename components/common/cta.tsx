@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default function Cta() {
   return (
@@ -12,9 +13,11 @@ export default function Cta() {
         <p className="text-muted-foreground mb-8">
           Create your free account today and experience seamless ticket management.
         </p>
-        <Button size="lg" variant="default">
-          Sign Up Free
-        </Button>
+        <Link href="/auth/signup">
+          <Button size="lg" variant="default">
+            Sign Up for Free
+          </Button>
+        </Link>
       </div>
     </section>
   );

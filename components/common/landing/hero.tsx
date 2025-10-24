@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default function Hero() {
   return (
@@ -21,10 +22,14 @@ export default function Hero() {
         </p>
 
         <div className="mt-6 flex flex-wrap justify-center gap-4">
-          <Button size="lg">Get Started</Button>
-          <Button variant="secondary" size="lg">
-            Learn More
-          </Button>
+          <Link href="/auth/signup">
+            <Button size="lg">Get Started</Button>
+          </Link>
+          <Link href="#features">
+            <Button variant="secondary" size="lg" className="text-white">
+              Learn More
+            </Button>
+          </Link>
         </div>
       </div>
 
