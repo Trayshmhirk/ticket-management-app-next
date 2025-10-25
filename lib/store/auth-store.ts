@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { devtools } from "zustand/middleware";
+import { persist } from "zustand/middleware";
 
 type Session = {
   token: string;
@@ -12,41 +12,45 @@ type AuthState = {
   setSession: (s: Session) => void;
   clearSession: () => void;
   isAuthenticated: () => boolean;
+  hasHydrated: boolean;
+  setHasHydrated: (v: boolean) => void;
 };
 
 const SESSION_KEY = "ticketapp_session";
 
 export const useAuthStore = create<AuthState>()(
-  devtools((set, get) => ({
-    session: null,
-    setSession: (s) => {
-      set({ session: s });
+  persist(
+    (set, get) => ({
+      session: null,
+      hasHydrated: false,
 
-      if (s) {
-        try {
-          localStorage.setItem(SESSION_KEY, JSON.stringify(s));
-        } catch (e) {
-          // ignore
-          throw e;
-        }
-      } else {
-        localStorage.removeItem(SESSION_KEY);
-      }
-    },
-    clearSession: () => {
-      set({ session: null });
+      setSession: (s) => {
+        set({ session: s });
+      },
 
-      try {
-        localStorage.removeItem(SESSION_KEY);
-      } catch {}
-    },
-    isAuthenticated: () => {
-      const s = get().session;
+      clearSession: () => {
+        set({ session: null });
+      },
 
-      if (!s) return false;
-      return s.expiresAt > Date.now();
-    },
-  }))
+      isAuthenticated: () => {
+        const s = get().session;
+
+        if (!s) return false;
+        return s.expiresAt > Date.now();
+      },
+
+      setHasHydrated: (v) => set({ hasHydrated: v }),
+    }),
+
+    {
+      name: "ticketapp_auth",
+      onRehydrateStorage: () => (state, error) => {
+        if (error) console.error("Auth rehydration failed:", error);
+
+        if (state?.setHasHydrated) state.setHasHydrated(true);
+      },
+    }
+  )
 );
 
 // helper to bootstrap store from storage on client load
@@ -63,7 +67,6 @@ export function initializeAuthFromStorage() {
       useAuthStore.getState().setSession(parsed);
     }
   } catch (e) {
-    // ignore
-    throw e;
+    console.error("Failed to initialize auth from storage:", e);
   }
 }

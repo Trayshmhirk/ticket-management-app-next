@@ -121,8 +121,5 @@ export async function apiLogin({
 
 export async function apiLogout(): Promise<void> {
   await sleep(200);
-
-  // remove session and user
   localStorage.removeItem(SESSION_KEY);
-  localStorage.removeItem(USERS_KEY);
 }

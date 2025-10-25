@@ -4,6 +4,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import AuthInitializer from "@/lib/providers/auth-initializer";
 import { Toaster } from "sonner";
+import ProtectedRoute from "@/lib/providers/protected-routes";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,7 +34,9 @@ export default function RootLayout({
       >
         <NextTopLoader color="#4A90E2" showSpinner={false} crawlSpeed={200} />
         <Toaster richColors position="top-right" />
-        <AuthInitializer>{children}</AuthInitializer>
+        <AuthInitializer>
+          <ProtectedRoute>{children}</ProtectedRoute>
+        </AuthInitializer>
       </body>
     </html>
   );
