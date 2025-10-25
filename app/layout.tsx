@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import NextTopLoader from "nextjs-toploader";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import AuthInitializer from "@/lib/providers/auth-initializer";
 import { Toaster } from "sonner";
 
 const geistSans = Geist({
@@ -32,7 +33,7 @@ export default function RootLayout({
       >
         <NextTopLoader color="#4A90E2" showSpinner={false} crawlSpeed={200} />
         <Toaster richColors position="top-right" />
-        {children}
+        <AuthInitializer>{children}</AuthInitializer>
       </body>
     </html>
   );
