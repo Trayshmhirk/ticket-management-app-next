@@ -17,6 +17,9 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
+import { useLoginMutation } from "@/lib/hooks/use-auth-mutation";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 const loginSchema = z.object({
   email: z.email("Email is invalid").min(1, "Email is required"),
@@ -26,8 +29,9 @@ const loginSchema = z.object({
 type LoginFormData = z.infer<typeof loginSchema>;
 
 export default function LoginPage() {
+  const router = useRouter();
+
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
 
   const {
     register,
@@ -41,12 +45,17 @@ export default function LoginPage() {
     },
   });
 
+  const { mutate, isLoading } = useLoginMutation();
+
   const onSubmit = async (data: LoginFormData) => {
-    setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-      console.log("Login attempt:", data);
-    }, 1000);
+    await mutate(data)
+      .then(() => {
+        router.push("/dashboard");
+        toast.success("Signed in successfully");
+      })
+      .catch((error) => {
+        toast.error(error.message);
+      });
   };
 
   return (

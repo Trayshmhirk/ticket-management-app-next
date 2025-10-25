@@ -17,6 +17,9 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
+import { useSignupMutation } from "@/lib/hooks/use-auth-mutation";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 const signupSchema = z
   .object({
@@ -33,9 +36,11 @@ const signupSchema = z
 type SignupFormData = z.infer<typeof signupSchema>;
 
 export default function SignupPage() {
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+
+  const { mutate, isLoading } = useSignupMutation();
 
   const {
     register,
@@ -52,11 +57,14 @@ export default function SignupPage() {
   });
 
   const onSubmit = async (data: SignupFormData) => {
-    setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-      console.log("Signup attempt:", data);
-    }, 1000);
+    await mutate({ name: data.name, email: data.email, password: data.password })
+      .then(() => {
+        router.push("/dashboard");
+        toast.success("Signed up successfully");
+      })
+      .catch((error) => {
+        toast.error(error.message || "Signup failed");
+      });
   };
 
   return (
